@@ -5,6 +5,11 @@ import java.util.ArrayList;
 /**
  * _______________________________________________________________________________________________
  * ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+ *
+ * G-Cost :: Cost of travel to start node to current node
+ * H-Cost :: Cost of travel to end node from current node
+ * F-Cost :: The sum of G and H-Cost
+ *
  Add the start position to the open list
 
  While open list is not empty:
@@ -26,8 +31,8 @@ import java.util.ArrayList;
  If adjacent tile is not in the open list: set its scores, set its parent, add it to the open list
  else If the new G score will be better than its current G score lower, update the tile
 
- If we get here, it means the open list is empty, and we didn't find a path :(
- Return nothing ;(
+ If we get here, it means the open list is empty, and we didn't find a path
+ Return nothing
  _______________________________________________________________________________________________
  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
  * **/
@@ -39,9 +44,5 @@ public class AStar {
     public void getStartTile(Tile startTile){
         openList.add(startTile);
     }
-
-    public void
-
-
 
 }
