@@ -4,12 +4,20 @@ package com.mygdx.game;
  * Created by MichaelSjogren on 2017-02-19.
  */
 public class Tile {
-
-    private int tileWidth;
-    private int tileHeight;
+    public static final int TILE_WIDTH = 32;
+    public static final int TILE_HEIGHT = 32;
+    private float y;
+    private float x;
     private boolean isWall = false;
     private boolean isStart = false;
     private boolean isEnd = false;
+    private boolean isWalkable = true;
+
+    public Tile(float x , float y){
+
+        this.x = x;
+        this.y = y;
+    }
 
     public boolean isWall() {
         return isWall;
@@ -35,25 +43,6 @@ public class Tile {
         isEnd = end;
     }
 
-    private float x;
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
-
     public float getX() {
         return x;
     }
@@ -70,13 +59,11 @@ public class Tile {
         this.y = y;
     }
 
-    private float y;
+    public boolean isWalkable() {
+        return isWalkable;
+    }
 
-    public Tile(float x , float y , int tileWidth , int tileHeight){
-
-        this.x = x;
-        this.y = y;
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
+    public void setWalkable(boolean walkable) {
+        isWalkable = walkable;
     }
 }
