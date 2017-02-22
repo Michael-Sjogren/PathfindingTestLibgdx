@@ -1,5 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -38,11 +42,20 @@ import java.util.ArrayList;
  * **/
 public class AStar {
 
+
     private ArrayList<Tile> openList = new ArrayList<>();
     private ArrayList<Tile> closedList = new ArrayList<>();
 
-    public void getStartTile(Tile startTile){
+    public void getStartTile(Tile startTile , Tile endTile){
         openList.add(startTile);
     }
+
+    public AStar(){
+
+    }
+
+    //public ArrayList<Point> findPath(){
+    //    return;
+  //  }
 
 }

@@ -12,11 +12,41 @@ public class Tile {
     private boolean isStart = false;
     private boolean isEnd = false;
     private boolean isWalkable = true;
+    private double fcost;
+    private double hcost;
+    private double gcost;
 
-    public Tile(float x , float y){
 
+    public Tile(float x , float y , double fcost , double hcost ,double gcost){
         this.x = x;
         this.y = y;
+        this.fcost = fcost;
+        this.hcost = hcost;
+        this.gcost = gcost;
+    }
+
+    public double getFcost() {
+        return fcost;
+    }
+
+    public void setFcost(double fcost) {
+        this.fcost = fcost;
+    }
+
+    public double getHcost() {
+        return hcost;
+    }
+
+    public void setHcost(double hcost) {
+        this.hcost = hcost;
+    }
+
+    public double getGcost() {
+        return gcost;
+    }
+
+    public void setGcost(double gcost) {
+        this.gcost = gcost;
     }
 
     public boolean isWall() {
