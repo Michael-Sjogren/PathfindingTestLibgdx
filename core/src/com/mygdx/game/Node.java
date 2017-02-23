@@ -1,60 +1,57 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.math.Vector;
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * Created by MichaelSjogren on 2017-02-22.
  */
-public class Node {
+public class Node{
 
+    private float x;
+    private float y;
     private Node parent;
-    private final float fCost;
-    private float gCost;
-    private float hCost;
+    private int fCost;
+    private int gCost;
+    private int hCost;
 
-    public Node (Vector2 tile , Node parent , float gCost , float hCost){
-        this.tile = tile;
-        this.parent = parent;
+    public Node(float x , float y){
+        this.x = x - LevelManager.tilePixelWidth /2;
+        this.y = y - LevelManager.tilePixelHeight /2;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setfCost(int fCost) {
+        this.fCost = fCost;
+    }
+
+    public void setgCost(int gCost) {
         this.gCost = gCost;
+    }
+
+    public void sethCost(int hCost) {
         this.hCost = hCost;
-        this.fCost = gCost + hCost;
     }
 
-    private Vector2 tile;
-
-    public Vector2 getTile() {
-        return tile;
-    }
-
-    public void setTile(Vector2 tile) {
-        this.tile = tile;
-    }
-
-    public Node getParent() {
-        return parent;
-    }
-
-    public void setParent(Node parent) {
+    public void setNodeParent(Node parent){
         this.parent = parent;
     }
 
-    public float getfCost() {
+    public int getfCost() {
         return fCost;
     }
 
-    public float getgCost() {
+    public int getgCost() {
         return gCost;
     }
 
-    public void setgCost(float gCost) {
-        this.gCost = gCost;
-    }
-
-    public float gethCost() {
+    public int gethCost() {
         return hCost;
     }
-    public void sethCost(float hCost) {
-        this.hCost = hCost;
-    }
+
+
 }
