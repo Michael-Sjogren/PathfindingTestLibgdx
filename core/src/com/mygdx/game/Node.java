@@ -14,8 +14,8 @@ public class Node{
     private TileType type;
 
     public Node(float x , float y , TileType type){
-        this.x = x - LevelManager.tilePixelWidth /2;
-        this.y = y - LevelManager.tilePixelHeight /2;
+        this.x = x + LevelManager.tileWidth /2;
+        this.y = y + LevelManager.tileHeight /2;
         this.type = type;
     }
 

@@ -30,6 +30,8 @@ public class MyGdxGame extends ApplicationAdapter {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+    private Node startNode;
+    private Node endNode;
 
 
 
@@ -43,7 +45,8 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setAutoShapeType(true);
-        System.out.println(LevelManager.nodes[4][4].getType());
+        setStart();
+        setGoal();
     }
 
     public void findPath(Node startNode , Node endNode){
@@ -51,7 +54,19 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
 
+    public void setStart(){
+        do{
+            startNode = LevelManager.getNode( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+        }
+        while (startNode.getType() == TileType.WALL || startNode == endNode);
+    }
 
+    public void setGoal(){
+        do{
+            endNode = LevelManager.getNode( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+        }
+        while (endNode.getType() == TileType.WALL || endNode == startNode);
+    }
 
 
 
@@ -64,18 +79,24 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
-
-        for (int y = 0; y < LevelManager.mapHeightInTiles +1; y++) {
-            for (int x = 0; x < LevelManager.mapWidthInTiles +1; x++){
-                Node node = LevelManager.nodes[x][y];
+        shapeRenderer.begin();
+        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1,1,0,1f);
+        shapeRenderer.rect(startNode.getX() - 16 , startNode.getY() - 16 , 32 ,32);
+        shapeRenderer.setColor(0,1,1,1f);
+        shapeRenderer.rect(endNode.getX() - 16 , endNode.getY() - 16 , 32 ,32);
+        shapeRenderer.end();
+        for (int x = 0; x < LevelManager.nodes.length; x++) {
+            for (int y = 0; y < LevelManager.nodes[0].length; y++){
                 shapeRenderer.begin();
+                Node node = LevelManager.nodes[x][y];
                 if(node.getType() == TileType.FLOOR){
                     shapeRenderer.setColor(1f , 1f , 1f , 1);
                     shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.circle(node.getX() , node.getY(), 2f);
+                    shapeRenderer.circle(node.getX() , node.getY(), 1f);
                 }else if(node.getType() == TileType.WALL){
                     shapeRenderer.setColor(1f , 1f , 0 , 1);
-                    shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+                    shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.circle(node.getX() , node.getY(), 2f);
                 }
                 shapeRenderer.end();
