@@ -43,34 +43,14 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setAutoShapeType(true);
-        System.out.println(LevelManager.checkIfWall(64 , 64));
+        System.out.println(LevelManager.nodes[4][4].getType());
     }
 
     public void findPath(Node startNode , Node endNode){
-        ArrayList<Node> openList = new ArrayList<>();
-        ArrayList<Node> closedList = new ArrayList<>();
-        openList.add(startNode);
-        while(openList.size() > 0){
-           Node current = sortByLowestFcost(openList);
-           openList.remove(current);
-           closedList.add(current);
-           if(current.equals(endNode)){
-            return;
-           }
-        }
+
     }
 
-    public Node sortByLowestFcost(ArrayList<Node> openList){
-        Node minNode = new Node(0 , 0);
-        int min = 0;
-        for (Node node: openList) {
-            if(min > node.getfCost()) {
-                min = node.getfCost();
-                minNode = node;
-            }
-        }
-        return minNode;
-    }
+
 
 
 
@@ -89,7 +69,15 @@ public class MyGdxGame extends ApplicationAdapter {
             for (int x = 0; x < LevelManager.mapWidthInTiles +1; x++){
                 Node node = LevelManager.nodes[x][y];
                 shapeRenderer.begin();
-                shapeRenderer.point(node.getX() , node.getY(), 0f);
+                if(node.getType() == TileType.FLOOR){
+                    shapeRenderer.setColor(1f , 1f , 1f , 1);
+                    shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.circle(node.getX() , node.getY(), 2f);
+                }else if(node.getType() == TileType.WALL){
+                    shapeRenderer.setColor(1f , 1f , 0 , 1);
+                    shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+                    shapeRenderer.circle(node.getX() , node.getY(), 2f);
+                }
                 shapeRenderer.end();
             }
         }

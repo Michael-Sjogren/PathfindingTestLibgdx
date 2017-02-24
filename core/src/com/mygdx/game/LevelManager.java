@@ -22,38 +22,48 @@ public class LevelManager {
     public static TiledMapTileLayer tileLayer;
     public static Node[][] nodes;
 
-    public static void loadLevel(String filePath){
+    public static void loadLevel(String filePath) {
         tiledMap = new TmxMapLoader().load(filePath);
         MapProperties properties = tiledMap.getProperties();
         tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
         mapWidthInTiles = properties.get("width", Integer.class);
         mapHeightInTiles = properties.get("height", Integer.class);
-        nodes = new Node[mapWidthInTiles +1][mapHeightInTiles +1];
-        tilePixelWidth = properties.get("tilewidth" , Integer.class);
-        tilePixelHeight = properties.get("tileheight" , Integer.class);
+        nodes = new Node[mapWidthInTiles + 1][mapHeightInTiles + 1];
+        tilePixelWidth = properties.get("tilewidth", Integer.class);
+        tilePixelHeight = properties.get("tileheight", Integer.class);
         lvlPixelWidth = mapWidthInTiles * tilePixelWidth;
         lvlPixelHeight = mapHeightInTiles * tilePixelHeight;
-        System.out.println("map width in tiles:" + mapWidthInTiles + " : map height in tiles: " + mapHeightInTiles );
+        System.out.println("map width in tiles:" + mapWidthInTiles + " : map height in tiles: " + mapHeightInTiles);
         createNodeList();
     }
 
-    public static boolean checkIfWall(int x ,int y){
+    public static boolean checkIfWall(int x, int y) {
         int modY = y / tilePixelWidth;
         int modX = x / tilePixelHeight;
-        boolean iswall = Boolean.valueOf(tileLayer.getCell(modX , modY).getTile().getProperties().get("Wall",String.class));
-        if(!iswall){
-            return false;
-        }else{
+        boolean iswall = Boolean.valueOf(tileLayer.getCell(modX, modY).getTile().getProperties().get("Wall").toString());
+        System.out.println(iswall);
+        if (iswall) {
             return true;
+        } else {
+            return false;
         }
     }
 
-    private static void createNodeList(){
-        for (int y = 0; y < mapHeightInTiles +1; y++) {
-            for (int x = 0; x < mapWidthInTiles +1; x++){
-               // if(checkIfWall(x  , y )) ;
-                nodes[x][y] = new Node(x * 32 , y * 32);
+    private static void createNodeList() {
+        int walls = 0;
+        int floor = 0;
+        for (int y = 0; y < mapHeightInTiles + 1; y++) {
+            for (int x = 0; x < mapWidthInTiles + 1; x++) {
+                if (checkIfWall(x , y )) {
+                    walls ++;
+                    nodes[x][y] = new Node(x * tilePixelWidth, y * tilePixelHeight, TileType.WALL);
+                } else {
+                    floor++;
+                    nodes[x][y] = new Node(x * 32, y * 32, TileType.FLOOR);
+                }
             }
         }
+        System.out.println("Floor tiles: " + floor);
+        System.out.println("Wall tiles: " + walls);
     }
 }

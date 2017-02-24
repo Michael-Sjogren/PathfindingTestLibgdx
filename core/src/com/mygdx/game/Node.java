@@ -11,10 +11,12 @@ public class Node{
     private int fCost;
     private int gCost;
     private int hCost;
+    private TileType type;
 
-    public Node(float x , float y){
+    public Node(float x , float y , TileType type){
         this.x = x - LevelManager.tilePixelWidth /2;
         this.y = y - LevelManager.tilePixelHeight /2;
+        this.type = type;
     }
 
     public float getX() {
@@ -54,4 +56,11 @@ public class Node{
     }
 
 
+    public TileType getType() {
+        return type;
+    }
+
+    public void setType(TileType type) {
+        this.type = type;
+    }
 }

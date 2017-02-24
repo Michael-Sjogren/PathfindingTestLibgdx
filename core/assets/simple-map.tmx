@@ -4,12 +4,12 @@
   <image source="simple-ts.png" width="256" height="32"/>
   <tile id="0">
    <properties>
-    <property name="Wall" type="bool" value="false"/>
+    <property name="Wall" value="false"/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
-    <property name="Wall" type="bool" value="true"/>
+    <property name="Wall" value="true"/>
    </properties>
   </tile>
  </tileset>
