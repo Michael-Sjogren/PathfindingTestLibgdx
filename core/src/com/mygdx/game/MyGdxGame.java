@@ -85,8 +85,8 @@ public class MyGdxGame extends ApplicationAdapter {
         renderer.setView(camera);
         renderer.render();
 
-        for (int y = 0; y < LevelManager.lvlTileHeight; y++) {
-            for (int x = 0; x < LevelManager.lvlTileWidth; x++){
+        for (int y = 0; y < LevelManager.mapHeightInTiles +1; y++) {
+            for (int x = 0; x < LevelManager.mapWidthInTiles +1; x++){
                 Node node = LevelManager.nodes[x][y];
                 shapeRenderer.begin();
                 shapeRenderer.point(node.getX() , node.getY(), 0f);

@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,8 +12,8 @@ import java.util.ArrayList;
  * Created by MichaelSjogren on 2017-02-23.
  */
 public class LevelManager {
-    public static int lvlTileWidth;
-    public static int lvlTileHeight;
+    public static int mapWidthInTiles;
+    public static int mapHeightInTiles;
     public static int lvlPixelWidth;
     public static int lvlPixelHeight;
     public static TiledMap tiledMap;
@@ -25,13 +26,14 @@ public class LevelManager {
         tiledMap = new TmxMapLoader().load(filePath);
         MapProperties properties = tiledMap.getProperties();
         tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
-        lvlTileWidth = properties.get("width", Integer.class);
-        lvlTileHeight = properties.get("height", Integer.class);
-        nodes = new Node[lvlTileWidth][lvlTileHeight];
+        mapWidthInTiles = properties.get("width", Integer.class);
+        mapHeightInTiles = properties.get("height", Integer.class);
+        nodes = new Node[mapWidthInTiles +1][mapHeightInTiles +1];
         tilePixelWidth = properties.get("tilewidth" , Integer.class);
         tilePixelHeight = properties.get("tileheight" , Integer.class);
-        lvlPixelWidth = lvlTileWidth * tilePixelWidth;
-        lvlPixelHeight = lvlTileHeight * tilePixelHeight;
+        lvlPixelWidth = mapWidthInTiles * tilePixelWidth;
+        lvlPixelHeight = mapHeightInTiles * tilePixelHeight;
+        System.out.println("map width in tiles:" + mapWidthInTiles + " : map height in tiles: " + mapHeightInTiles );
         createNodeList();
     }
 
@@ -47,8 +49,8 @@ public class LevelManager {
     }
 
     private static void createNodeList(){
-        for (int y = 0; y < lvlTileHeight; y++) {
-            for (int x = 0; x < lvlTileWidth; x++){
+        for (int y = 0; y < mapHeightInTiles +1; y++) {
+            for (int x = 0; x < mapWidthInTiles +1; x++){
                // if(checkIfWall(x  , y )) ;
                 nodes[x][y] = new Node(x * 32 , y * 32);
             }
