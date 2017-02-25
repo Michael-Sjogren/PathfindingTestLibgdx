@@ -7,8 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.ArrayList;
-
 /**
  * Created by MichaelSjogren on 2017-02-23.
  */
@@ -29,12 +27,12 @@ public class LevelManager {
         tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
         mapWidthInTiles = properties.get("width", Integer.class);
         mapHeightInTiles = properties.get("height", Integer.class);
-        System.out.println("Map width: " + mapWidthInTiles + " :: " + mapHeightInTiles);
         tileWidth = properties.get("tilewidth", Integer.class);
         tileHeight = properties.get("tileheight", Integer.class);
         tiles = new Tile[Gdx.graphics.getWidth() / tileWidth][Gdx.graphics.getHeight() / tileHeight];
         mapPixelWidth = mapWidthInTiles * tileWidth;
         mapPixelHeight = mapHeightInTiles * tileHeight;
+        System.out.println("Map width: " + mapPixelWidth + " :: " + mapPixelHeight);
         System.out.println("map width in tiles:" + mapWidthInTiles + " : map height in tiles: " + mapHeightInTiles);
         createNodeList();
     }

@@ -1,26 +1,15 @@
 package com.mygdx.game;
 
+import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Path;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-
-import java.util.*;
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -31,8 +20,6 @@ public class MyGdxGame extends ApplicationAdapter {
     private Tile startTile2;
     private Tile endTile;
     private List<Node> path1;
-    private List<Node> path2;
-
     @Override
 	public void create () {
         LevelManager.loadLevel("simple-map.tmx");
@@ -47,8 +34,6 @@ public class MyGdxGame extends ApplicationAdapter {
         endTile = setGoal();
         path1 = PathFinder.findPath(startTile1.getTileCenter() , endTile.getTileCenter() , true);
     }
-
-
 
     public Tile getStart(){
         Tile tile;
@@ -83,15 +68,13 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer.rect(endTile.getCords().x , endTile.getCords().y , endTile.getTileWidth() ,endTile.getTileHeight());
         shapeRenderer.end();
 
-        if(path1 !=  null){
-
+        if(path1 !=  null){	
             for (Node node: path1
                     ) {
                 shapeRenderer.begin();
                 shapeRenderer.set(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(.5f ,0 ,0 ,1f);
                 shapeRenderer.line(node.getCordinates() , node.getParent().getCordinates());
-
                 shapeRenderer.end();
             }
         }
