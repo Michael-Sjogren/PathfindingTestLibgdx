@@ -83,21 +83,6 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer.rect(endTile.getCords().x , endTile.getCords().y , endTile.getTileWidth() ,endTile.getTileHeight());
         shapeRenderer.end();
 
-        for (int x = 0; x < LevelManager.tiles.length; x++) {
-            for (int y = 0; y < LevelManager.tiles[0].length; y++){
-
-                Tile tile = LevelManager.tiles[x][y];
-                    shapeRenderer.begin();
-                    if (tile.getType() == TileType.FLOOR) {
-                        shapeRenderer.setColor(1f, 1f, 1f, 1);
-                        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-                        shapeRenderer.circle(tile.getTileCenter().x , tile.getTileCenter().y,1.5f);
-                    }
-                    shapeRenderer.end();
-            }
-
-        }
-
         if(path1 !=  null){
 
             for (Node node: path1
