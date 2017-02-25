@@ -1,66 +1,44 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by MichaelSjogren on 2017-02-22.
  */
 public class Node{
 
-    private float x;
-    private float y;
+    private Vector2 cordinates;
     private Node parent;
-    private int fCost;
-    private int gCost;
-    private int hCost;
-    private TileType type;
+    private double fCost;
+    private double gCost;
+    private double hCost;
 
-    public Node(float x , float y , TileType type){
-        this.x = x + LevelManager.tileWidth /2;
-        this.y = y + LevelManager.tileHeight /2;
-        this.type = type;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setfCost(int fCost) {
-        this.fCost = fCost;
-    }
-
-    public void setgCost(int gCost) {
-        this.gCost = gCost;
-    }
-
-    public void sethCost(int hCost) {
-        this.hCost = hCost;
-    }
-
-    public void setNodeParent(Node parent){
+    public Node(Vector2 cordinates , Node parent , double gCost , double hCost ){
+        this.cordinates = cordinates;
         this.parent = parent;
+        this.gCost = gCost;
+        this.hCost = hCost;
+        this.fCost = this.gCost + this.hCost;
     }
 
-    public int getfCost() {
+    /** getters  **/
+    public Vector2 getCordinates() {
+        return cordinates;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public double getfCost() {
         return fCost;
     }
 
-    public int getgCost() {
+    public double getgCost() {
         return gCost;
     }
 
-    public int gethCost() {
+    public double gethCost() {
         return hCost;
-    }
-
-
-    public TileType getType() {
-        return type;
-    }
-
-    public void setType(TileType type) {
-        this.type = type;
     }
 }

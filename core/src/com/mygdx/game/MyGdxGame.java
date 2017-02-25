@@ -20,20 +20,18 @@ import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MyGdxGame extends ApplicationAdapter {
 
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
-    private Node startNode;
-    private Node endNode;
-
-
+    private Tile startTile1;
+    private Tile startTile2;
+    private Tile endTile;
+    private List<Node> path1;
+    private List<Node> path2;
 
     @Override
 	public void create () {
@@ -45,32 +43,30 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setAutoShapeType(true);
-        setStart();
-        setGoal();
-    }
-
-    public void findPath(Node startNode , Node endNode){
-
+        startTile1 = getStart();
+        endTile = setGoal();
+        path1 = PathFinder.findPath(startTile1.getTileCenter() , endTile.getTileCenter() , true);
     }
 
 
-    public void setStart(){
+
+    public Tile getStart(){
+        Tile tile;
         do{
-            startNode = LevelManager.getNode( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+            tile = LevelManager.getTileByXY( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
         }
-        while (startNode.getType() == TileType.WALL || startNode == endNode);
+        while (tile.getType() == TileType.WALL || tile == endTile);
+        return tile;
     }
 
-    public void setGoal(){
+    public Tile setGoal(){
+        Tile tile;
         do{
-            endNode = LevelManager.getNode( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+            tile = LevelManager.getTileByXY( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
         }
-        while (endNode.getType() == TileType.WALL || endNode == startNode);
+        while (tile.getType() == TileType.WALL || tile == startTile1 || tile == startTile2);
+        return tile;
     }
-
-
-
-
 
 
 	@Override
@@ -82,23 +78,35 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1,1,0,1f);
-        shapeRenderer.rect(startNode.getX() - 16 , startNode.getY() - 16 , 32 ,32);
+        shapeRenderer.rect(startTile1.getCords().x , startTile1.getCords().y, startTile1.getTileWidth() ,startTile1.getTileHeight());
         shapeRenderer.setColor(0,1,1,1f);
-        shapeRenderer.rect(endNode.getX() - 16 , endNode.getY() - 16 , 32 ,32);
+        shapeRenderer.rect(endTile.getCords().x , endTile.getCords().y , endTile.getTileWidth() ,endTile.getTileHeight());
         shapeRenderer.end();
-        for (int x = 0; x < LevelManager.nodes.length; x++) {
-            for (int y = 0; y < LevelManager.nodes[0].length; y++){
+
+        for (int x = 0; x < LevelManager.tiles.length; x++) {
+            for (int y = 0; y < LevelManager.tiles[0].length; y++){
+
+                Tile tile = LevelManager.tiles[x][y];
+                    shapeRenderer.begin();
+                    if (tile.getType() == TileType.FLOOR) {
+                        shapeRenderer.setColor(1f, 1f, 1f, 1);
+                        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+                        shapeRenderer.circle(tile.getTileCenter().x , tile.getTileCenter().y,1.5f);
+                    }
+                    shapeRenderer.end();
+            }
+
+        }
+
+        if(path1 !=  null){
+
+            for (Node node: path1
+                    ) {
                 shapeRenderer.begin();
-                Node node = LevelManager.nodes[x][y];
-                if(node.getType() == TileType.FLOOR){
-                    shapeRenderer.setColor(1f , 1f , 1f , 1);
-                    shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.circle(node.getX() , node.getY(), 1f);
-                }else if(node.getType() == TileType.WALL){
-                    shapeRenderer.setColor(1f , 1f , 0 , 1);
-                    shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.circle(node.getX() , node.getY(), 2f);
-                }
+                shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+                shapeRenderer.setColor(.5f ,0 ,0 ,1f);
+                shapeRenderer.line(node.getCordinates() , node.getParent().getCordinates());
+
                 shapeRenderer.end();
             }
         }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class LevelManager {
     public static Integer tileWidth;
     public static Integer tileHeight;
     public static TiledMapTileLayer tileLayer;
-    public static Node[][] nodes;
+    public static Tile[][] tiles;
 
     public static void loadLevel(String filePath) {
         tiledMap = new TmxMapLoader().load(filePath);
@@ -31,7 +32,7 @@ public class LevelManager {
         System.out.println("Map width: " + mapWidthInTiles + " :: " + mapHeightInTiles);
         tileWidth = properties.get("tilewidth", Integer.class);
         tileHeight = properties.get("tileheight", Integer.class);
-        nodes = new Node[Gdx.graphics.getWidth() / tileWidth][Gdx.graphics.getHeight() / tileHeight];
+        tiles = new Tile[Gdx.graphics.getWidth() / tileWidth][Gdx.graphics.getHeight() / tileHeight];
         mapPixelWidth = mapWidthInTiles * tileWidth;
         mapPixelHeight = mapHeightInTiles * tileHeight;
         System.out.println("map width in tiles:" + mapWidthInTiles + " : map height in tiles: " + mapHeightInTiles);
@@ -40,6 +41,7 @@ public class LevelManager {
 
 
     public static boolean checkIfWall(int x, int y) {
+        if(tileLayer.getCell(x, y).getTile().getProperties().get("Wall" ) == null) return true;
         boolean iswall = Boolean.valueOf(tileLayer.getCell(x, y).getTile().getProperties().get("Wall" , String.class));
         if (iswall) {
             return true;
@@ -48,22 +50,22 @@ public class LevelManager {
         }
     }
 
-    public static Node getNode(int x ,int y){
-        return nodes[x][y];
+    public static Tile getTileByXY(int x ,int y){
+        if(x > tiles.length -1 || y > tiles[0].length -1 || y < 0 || x < 0) return null;
+        return tiles[x][y];
     }
 
     private static void createNodeList() {
         int walls = 0;
         int floor = 0;
-        for (int x = 0; x < nodes.length; x++) {
-            for (int y = 0; y < nodes[0].length; y++) {
-                System.out.println("X: " + x + " :: " + "Y: " + y);
+        for (int x = 0; x < tiles.length; x++) {
+            for (int y = 0; y < tiles[0].length; y++) {
                 if (checkIfWall(  x  ,  y )) {
                     walls ++;
-                    nodes[x][y] = new Node(x * tileWidth, y * tileHeight, TileType.WALL);
+                    tiles[x][y] = new Tile(new Vector2(x * tileWidth , y * tileHeight), tileWidth , tileHeight , TileType.WALL);
                 } else {
                     floor++;
-                    nodes[x][y] = new Node(x * tileWidth, y * tileHeight, TileType.FLOOR);
+                    tiles[x][y] = new Tile(new Vector2(x * tileWidth , y * tileHeight), tileWidth , tileHeight , TileType.FLOOR);
                 }
             }
         }

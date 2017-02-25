@@ -1,99 +1,65 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by MichaelSjogren on 2017-02-19.
  */
 public class Tile {
-    public static final int TILE_WIDTH = 32;
-    public static final int TILE_HEIGHT = 32;
-    private float y;
-    private float x;
-    private boolean isWall = false;
-    private boolean isStart = false;
-    private boolean isEnd = false;
-    private boolean isWalkable = true;
-    private double fcost;
-    private double hcost;
-    private double gcost;
+    private Vector2 cords;
+    private int tileWidth;
+    private int tileHeight;
+    private Vector2 tileCenter;
+    private TileType type;
 
-
-    public Tile(float x , float y , double fcost , double hcost ,double gcost){
-        this.x = x;
-        this.y = y;
-        this.fcost = fcost;
-        this.hcost = hcost;
-        this.gcost = gcost;
+    public Tile(Vector2 cords , int tileWidth , int tileHeight , TileType type){
+        this.cords = cords;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.type = type;
+        int tileCenterX = Math.round(cords.x) + tileWidth / 2 ;
+        int tileCenterY = Math.round(cords.y) + tileHeight / 2 ;
+        tileCenter = new Vector2(tileCenterX , tileCenterY);
     }
 
-    public double getFcost() {
-        return fcost;
+
+    public Vector2 getCords() {
+        return cords;
     }
 
-    public void setFcost(double fcost) {
-        this.fcost = fcost;
+    public void setType(TileType type) {
+        this.type = type;
     }
 
-    public double getHcost() {
-        return hcost;
+    public void setCords(Vector2 cords) {
+        this.cords = cords;
     }
 
-    public void setHcost(double hcost) {
-        this.hcost = hcost;
+    public TileType getType() {
+        return type;
     }
 
-    public double getGcost() {
-        return gcost;
+    public int getTileWidth() {
+        return tileWidth;
     }
 
-    public void setGcost(double gcost) {
-        this.gcost = gcost;
+    public void setTileWidth(int tileWidth) {
+        this.tileWidth = tileWidth;
     }
 
-    public boolean isWall() {
-        return isWall;
+    public int getTileHeight() {
+        return tileHeight;
     }
 
-    public void setWall(boolean wall) {
-        isWall = wall;
+    public void setTileHeight(int tileHeight) {
+        this.tileHeight = tileHeight;
     }
 
-    public boolean isStart() {
-        return isStart;
+    public void setTileCenter(Vector2 tileCenter) {
+        this.tileCenter = tileCenter;
     }
 
-    public void setStart(boolean start) {
-        isStart = start;
-    }
-
-    public boolean isEnd() {
-        return isEnd;
-    }
-
-    public void setEnd(boolean end) {
-        isEnd = end;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public boolean isWalkable() {
-        return isWalkable;
-    }
-
-    public void setWalkable(boolean walkable) {
-        isWalkable = walkable;
+    public Vector2 getTileCenter() {
+        return tileCenter;
     }
 }
