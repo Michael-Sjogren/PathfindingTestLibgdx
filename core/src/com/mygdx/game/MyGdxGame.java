@@ -7,6 +7,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -19,7 +21,6 @@ public class MyGdxGame extends ApplicationAdapter {
     private Tile startTile1;
     private Tile startTile2;
     private Tile endTile;
-    private List<Node> path1;
     @Override
 	public void create () {
         LevelManager.loadLevel("simple-map.tmx");
@@ -31,14 +32,16 @@ public class MyGdxGame extends ApplicationAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setAutoShapeType(true);
         startTile1 = getStart();
+        Player player = new Player(startTile1.getCords(),new Sprite(new Texture("player.png")));
+        Gdx.input.setInputProcessor(player);
         endTile = setGoal();
-        path1 = PathFinder.findPath(startTile1.getTileCenter() , endTile.getTileCenter() , true);
+        Enemy enemy = new Enemy(endTile.getCords(),new Sprite(new Texture("enemy.png")), player);
     }
 
     public Tile getStart(){
         Tile tile;
         do{
-            tile = LevelManager.getTileByXY( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+            tile = LevelManager.getTile( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
         }
         while (tile.getType() == TileType.WALL || tile == endTile);
         return tile;
@@ -47,7 +50,7 @@ public class MyGdxGame extends ApplicationAdapter {
     public Tile setGoal(){
         Tile tile;
         do{
-            tile = LevelManager.getTileByXY( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
+            tile = LevelManager.getTile( new Random().nextInt(LevelManager.mapPixelWidth) / 32 , new Random().nextInt(LevelManager.mapPixelHeight / 32));
         }
         while (tile.getType() == TileType.WALL || tile == startTile1 || tile == startTile2);
         return tile;
@@ -56,27 +59,19 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+        update(Gdx.graphics.getDeltaTime());
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.setView(camera);
         renderer.render();
-        shapeRenderer.begin();
-        shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1,1,0,1f);
-        shapeRenderer.rect(startTile1.getCords().x , startTile1.getCords().y, startTile1.getTileWidth() ,startTile1.getTileHeight());
-        shapeRenderer.setColor(0,1,1,1f);
-        shapeRenderer.rect(endTile.getCords().x , endTile.getCords().y , endTile.getTileWidth() ,endTile.getTileHeight());
-        shapeRenderer.end();
+        for (Entity entity : Entity.entities){
+            entity.render();
+        }
+    }
 
-        if(path1 !=  null){	
-            for (Node node: path1
-                    ) {
-                shapeRenderer.begin();
-                shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(.5f ,0 ,0 ,1f);
-                shapeRenderer.line(node.getCordinates() , node.getParent().getCordinates());
-                shapeRenderer.end();
-            }
+    private void update(float delta) {
+        for (Entity entity : Entity.entities){
+            entity.update(delta);
         }
     }
 

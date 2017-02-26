@@ -8,8 +8,8 @@ import java.util.*;
 public abstract class PathFinder {
 
     /**
-     * @param startNode - this is where the path will start
-     * @param endNode - this is where the path ends
+     * @param startNode - the tile position of where the path begins
+     * @param endNode - the tile position where the path ends
      * @param canGoDiag - if true: path will include calculation of nodes that are diagonal ,
      *                  else will only calculate up , down left , right
      * **/
@@ -48,12 +48,10 @@ public abstract class PathFinder {
                 int y = MathUtils.floor(current.getCordinates().y);
                 int xDir = (i % 3) - 1;
                 int yDir = (i / 3) - 1;
-                int modX = (x / LevelManager.tileWidth) + xDir;
-                int modY = (y / LevelManager.tileWidth) + yDir;
-                Tile at = LevelManager.getTileByXY(modX , modY);
+                Tile at = LevelManager.getTile(x + xDir   , y + yDir);
                 if (at == null) continue;
                 if(at.getType() == TileType.WALL) continue;
-                Vector2 a = new Vector2(x + xDir * LevelManager.tileWidth , y + yDir * LevelManager.tileHeight);
+                Vector2 a = new Vector2(x + xDir, y + yDir);
                 double gCost = current.getgCost() + current.getCordinates().dst(a);
                 double hCost = current.getCordinates().dst(endNode);
                 Node node = new Node(a , current ,gCost , hCost);
